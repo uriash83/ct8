@@ -1,26 +1,46 @@
 //const mysql = require('mysql');
 //const Sequelize = require('sequelize');
-//const MongoClient = require('mongodb').MongoClient;
+const mongoose = require('mongoose')
 const express = require('express');
 const cors = require('cors');
+const cookieSession = require('cookie-session')
 const bodyParser = require('body-parser');
-//require('./db/mongoose')
-
-
+const passport = require('passport');
 const config = require("../config/config.js")
+require('./models/User')
+require('./services/passport')
+
+
+        //console.log(db)
+mongoose.connect(config.mongoURI,{useNewUrlParser: true}).then(
+    (db) => {
+        //console.log(db)
+    },
+    err => {
+        //console.log(err)
+    }
+)
 
 const app = express();
-app.use(cors());
 
+
+app.use(
+    cookieSession({
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+        keys: [config.cookieKey]
+    })
+);
+app.use(passport.initialize());
+app.use(passport.session())
+require('./routes/authRoutes')(app)
+
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.json());// nasze zapytanie będzie zwracane jako json
 
 
-app.get('/',(req,res) => {
-  console.log('GET ')
-  res.send('hi there')
-})
+
 
 app.listen(config.PORT_SERVER, () => console.log("Listening on port" + config.PORT_SERVER));
 //const router = express.Router();
