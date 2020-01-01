@@ -2,7 +2,7 @@ const passport = require('passport')
 
 module.exports = (app) => {
   app.get(
-      '/auth/google' , 
+      '/auth/google' ,
       passport.authenticate('google',{
         scope: ['profile','email']
       })
@@ -23,6 +23,8 @@ module.exports = (app) => {
     //res.redirect('/') // localhost:3000
   })
   app.get('/api/current_user', (req,res) => {
+    
     res.send(req.user)
+   
 })
 };  

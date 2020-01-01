@@ -42,7 +42,11 @@ app.use(express.json());// nasze zapytanie będzie zwracane jako json
 
 
 
-app.listen(config.PORT_SERVER, () => console.log("Listening on port" + config.PORT_SERVER));
+app.listen(config.PORT_SERVER, () => {
+    console.log("Listening on port" + config.PORT_SERVER)
+    console.log('ENV'+process.env.NODE_ENV)
+});
+
 //const router = express.Router();
 
 // id 452101712848-gtk8a4dsjvp7e51ru996uue2ish8m9h5.apps.googleusercontent.com

@@ -120,7 +120,9 @@ const Header = () => {
          
         </Typography>
         <ListItemIcon>
-          <AccountCircle fontSize="small" />
+          <a href="/auth/google">
+            <AccountCircle fontSize="small" />
+            </a>  
         </ListItemIcon>
       </Toolbar>
     </AppBar>

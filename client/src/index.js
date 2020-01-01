@@ -1,10 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
+import * as serviceWorker from './serviceWorker';
+
+import { Provider } from 'react-redux';
+import { createStore , applyMiddleware } from 'redux';
+import reduxThunk from 'redux-thunk';
+
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from "@material-ui/core/CssBaseline";
 import {grey,lightBlue} from '@material-ui/core/colors';
-import * as serviceWorker from './serviceWorker';
+
+const store = createStore( () => [],{},applyMiddleware(reduxThunk))
 
 const greyTheme = createMuiTheme({
     palette: {
@@ -17,11 +24,15 @@ const greyTheme = createMuiTheme({
   });
 console.log(greyTheme)
 ReactDOM.render(
-    <ThemeProvider theme={greyTheme}>
-        <CssBaseline/>
-        <App 
-        />
-    </ThemeProvider>, 
+    
+      <ThemeProvider theme={greyTheme}>
+        <Provider store={store}>
+          <CssBaseline/>
+          <App 
+          />
+        </Provider>  
+      </ThemeProvider>,
+     
     document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

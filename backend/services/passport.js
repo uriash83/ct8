@@ -23,24 +23,23 @@ passport.use(new GoogleStrategy(
     clientSecret: config.googleClientSecret,
     callbackURL: '/auth/google/callback'
   }, 
-  (accessToken,refreshToken,profile,done) => {
+  async (accessToken,refreshToken,profile,done) => {
     //console.log("accessToken: "+accessToken)
     //console.log("refreshToken: "+refreshToken)
     //console.log("profile: " + util.inspect(profile, {showHidden: false, depth: null}))
-    User.findOne({
-      googleId: profile.id
-    }).then((existingUser) => {
-      if(existingUser){
-        done(null,existingUser) // pass callback to passport
-        console.log('existingUSer'+existingUser)
-      }
-      else{
-        console.log('newUser')
-        new User({ googleId: profile.id })
-          .save()
-          .then(user => done(null,user))//)
-      }
-    })
+    const existingUser = await User.findOne({ googleId: profile.id })
+    if(existingUser){
+      // id user exist 
+      done(null,existingUser);
+      //done(noerror,przekazanie do passport usera)
+      console.log('existUser',existingUser)
+    }
+    else{
+      console.log('newUser')
+      new User({ googleId: profile.id })
+        .save()
+        .then(user => done(null,user))//)
+    }
     
   }
   )
