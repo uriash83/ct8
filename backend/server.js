@@ -23,7 +23,15 @@ mongoose.connect(config.mongoURI,{useNewUrlParser: true}).then(
 
 const app = express();
 
-
+app.use(cors({
+    methods:['GET','POST'],
+    credentials: true 
+  }))
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.json());
+  app.use(express.json());// nasze zapytanie będzie zwracane jako json
+  
+   
 app.use(
     cookieSession({
         maxAge: 30 * 24 * 60 * 60 * 1000,
@@ -32,12 +40,23 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session())
+app.use(function(req, res, next) {
+  //header before route
+  console.log(req.headers.origin)
+  res.header('Access-Control-Allow-Credentials', true);
+  res.header('Access-Control-Allow-Origin', req.headers.origin);
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
+  if ('OPTIONS' == req.method) {
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.send(200);
+  } else {
+      next();
+  }
+}); 
 require('./routes/authRoutes')(app)
 
-app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-app.use(express.json());// nasze zapytanie będzie zwracane jako json
+
 
 
 

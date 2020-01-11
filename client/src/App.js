@@ -1,5 +1,9 @@
 import React, { Component } from "react";
 import {BrowserRouter,Route} from 'react-router-dom';
+import { connect } from 'react-redux';
+
+import * as actions  from './actions';
+
 import Header from './components/Header';
 import HikingStats from './components/stats/HikingStats'
 import RunningStats from './components/stats/RunningStats'
@@ -12,11 +16,13 @@ class App extends Component {
 
   componentDidMount(){
     console.log('componentDidMount')
+    this.props.fetchUser()
   }
   
   componentDidUpdate(){
     console.log('componentDidUpdate')
   }
+  
   render() {
     
     return (
@@ -25,7 +31,7 @@ class App extends Component {
           <BrowserRouter>
             <div>
               <Header/>
-                <Route path='/hikingStats' exact component={HikingStats}/>
+              <Route path='/hikingStats' exact component={HikingStats}/>
                 <Route path='/runningStats' exact component={RunningStats}/>
                 <Route path='/climbingStats' exact component={ClimbingStats}/>
                 <Route path='/hiking' exact component={Hiking}/>
@@ -36,6 +42,11 @@ class App extends Component {
     );
   }
 }
+function mapStateToProps(state){
+  return {
+    auth: state.auth
+  }
+}
 
-export default App;
+export default connect(mapStateToProps,actions)(App);
 

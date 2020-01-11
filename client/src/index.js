@@ -1,17 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import axios from 'axios';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 import { Provider } from 'react-redux';
 import { createStore , applyMiddleware } from 'redux';
 import reduxThunk from 'redux-thunk';
+import reducers from './reducers'
 
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from "@material-ui/core/CssBaseline";
 import {grey,lightBlue} from '@material-ui/core/colors';
 
-const store = createStore( () => [],{},applyMiddleware(reduxThunk))
+window.axios = axios; //tak można testować axios z przeglądarki
+
+const store = createStore(reducers,{},applyMiddleware(reduxThunk))
 
 const greyTheme = createMuiTheme({
     palette: {

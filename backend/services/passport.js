@@ -8,13 +8,15 @@ const User = mongoose.model('users')
 
 passport.serializeUser((user,done)=> {
   done(null,user.id) // this is in record id in mongoose bo w 1 rekordzie może byuć kilka id i logować sie przez google , linkedina itd
-
+  
 });
 
 passport.deserializeUser((id,done)=>{
   // id to jest to z id recordu mongoose
   User.findById(id)
-      .then(user => done(null,user) )
+      .then(user => {
+        done(null,user)
+      } )
 });
 
 passport.use(new GoogleStrategy(
@@ -27,6 +29,7 @@ passport.use(new GoogleStrategy(
     //console.log("accessToken: "+accessToken)
     //console.log("refreshToken: "+refreshToken)
     //console.log("profile: " + util.inspect(profile, {showHidden: false, depth: null}))
+    //console.log('profiler'+profile.photos[0].value)
     const existingUser = await User.findOne({ googleId: profile.id })
     if(existingUser){
       // id user exist 
@@ -36,7 +39,7 @@ passport.use(new GoogleStrategy(
     }
     else{
       console.log('newUser')
-      new User({ googleId: profile.id })
+      new User({ googleId: profile.id , googleAvatar: profile.photos[0].value})
         .save()
         .then(user => done(null,user))//)
     }
