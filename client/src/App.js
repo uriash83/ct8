@@ -10,6 +10,7 @@ import RunningStats from './components/stats/RunningStats'
 import ClimbingStats from './components/stats/ClimbingStats'
 import Hiking from './components/topics/Hiking'
 import Running from './components/topics/Running'
+import NewHikeForm from './components/stats/Dialog/NewHikeForm'
 //import Climbing from './components/topics/Climbing'
 
 class App extends Component {
@@ -36,6 +37,7 @@ class App extends Component {
                 <Route path='/climbingStats' exact component={ClimbingStats}/>
                 <Route path='/hiking' exact component={Hiking}/>
                 <Route path='/running' exact component={Running}/>
+                <Route path='/hike/newForm' exact component={NewHikeForm}/>
             </div>        
           </BrowserRouter>      
          

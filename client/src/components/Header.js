@@ -72,6 +72,7 @@ class Header extends Component {
       if(this.props.auth.googleId==='105991526101585050980'){
         return(
         <div>
+          <Divider/>
           <MenuItem 
             component={Link} to="/hikingStats"
             //onClick={handleClose}
@@ -163,7 +164,7 @@ class Header extends Component {
             </ListItemIcon>
             <ListItemText primary="Running" />
           </MenuItem>
-          <Divider/>
+          
           {this.renderRouteStat()}
         </Menu>
         <Typography background="secondary" variant="h6" className={classes.title}>
