@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { Field , reduxForm } from 'redux-form';
+import {connect} from 'react-redux'; 
 import _ from 'lodash';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 
 import HikeFormTextField from './HikeFormTextField';
 import Fields from './Fields';
+
+import {submitHikeForm} from '../../../actions'
 
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
 
@@ -19,7 +22,9 @@ class NewHikeForm extends Component {
     state = {
         open: false
     }
-
+    componentDidMount(){
+        console.log('all',this.props.all)
+    }
     renderTextFields() {
         return _.map(Fields.FIELDS, field => {
             return <Field 
@@ -29,12 +34,18 @@ class NewHikeForm extends Component {
                 component={HikeFormTextField} 
                 validate={required,[minLength2]}
                 label={field.label}
+                //onChange()
                 />
         })
     };
+
+    onFormSubmit = (formValues) => {
+        //console.log(formValues)
+        this.props.submitHikeForm(formValues)// to jest jest w state ale jest do tego dostęp
+    }
     render() {
-    
-    const { handleSubmit, pristine, reset, submitting, classes } = this.props
+    console.log(this.props)// thanks reduxForm ( na dole ) we get a tons of properties
+    const { handleSubmit, pristine, reset, submitting, classes , submitHikeForm} = this.props
     const handleClickOpen = () => {
             this.setState({open: true})
     };
@@ -54,10 +65,18 @@ class NewHikeForm extends Component {
                     <DialogTitle id="form-dialog-title">
                             New Hike
                     </DialogTitle>
-                    <form onSubmit={this.props.handleSubmit( value => console.log(value))}> 
+                    <form 
+                        onSubmit={handleSubmit(this.onFormSubmit)}
+                    > 
                         <DialogContent>
                             {/*
+
+                            onSubmit={onFormSubmit}
+                            <form onSubmit={() => submitHikeForm()}> 
+                            <form onSubmit={this.props.handleSubmit( value => console.log(value))}> 
                                 this.props.handleSubmit comes from reduxForm
+                                jeśli klikniemy w tak skonstruowanego forma to tylko nam wyświetli wartości z 
+                                form ale nie zapisze ich do form w state  Zeby zapisało musimy wywołać actions
                             */}
                             
                         {this.renderTextFields()}
@@ -84,12 +103,19 @@ function validatefn(values){
             // komentarz is not required
         }
         else if(!values[label]){
-            errors[label] = 'Entet the value'
+            errors[label] = 'Enter the value'
         }
     })
     return errors;
 }
-export default reduxForm({
+
+const HikeForm = reduxForm({
     validate: validatefn,
     form: 'newHikeForm'
 })(NewHikeForm);
+
+export default connect(
+    null,
+    {submitHikeForm}
+)(HikeForm);
+

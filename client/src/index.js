@@ -5,7 +5,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 import { Provider } from 'react-redux';
-import { createStore , applyMiddleware } from 'redux';
+import { createStore , applyMiddleware, compose } from 'redux';
 import reduxThunk from 'redux-thunk';
 import reducers from './reducers'
 
@@ -15,7 +15,8 @@ import {grey,lightBlue} from '@material-ui/core/colors';
 
 window.axios = axios; //tak można testować axios z przeglądarki
 
-const store = createStore(reducers,{},applyMiddleware(reduxThunk))
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(reducers,{},composeEnhancers(applyMiddleware(reduxThunk)))
 
 const greyTheme = createMuiTheme({
     palette: {
@@ -26,7 +27,7 @@ const greyTheme = createMuiTheme({
       },
     }
   });
-console.log(greyTheme)
+//console.log(greyTheme)
 ReactDOM.render(
     
       <ThemeProvider theme={greyTheme}>

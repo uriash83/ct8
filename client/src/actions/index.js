@@ -1,17 +1,29 @@
 import axios from 'axios';
-import { FETCH_USER }  from './types'
+import { FETCH_USER,CREATE_HIKE }  from './types'
 
+const config = {
+    withCredentials: true,
+    headers: {
+        'Content-Type':'application/json',
+    },
+}
 
 export const fetchUser = () => {
     return function (dispatch) {
         axios
-            .get('/api/current_user')
+            .get('/api/current_user',config)
             .then(res => dispatch({
                 type: FETCH_USER,
                 payload: res.data
             }))
     }
     
+}
+
+export const submitHikeForm = values => async dispatch => {
+    console.log('valurs',values)
+    dispatch({ type: CREATE_HIKE, payload: values})
+    //return { type : 'submit_hike'}
 }
 
 /*

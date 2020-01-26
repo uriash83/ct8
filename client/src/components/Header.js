@@ -37,6 +37,7 @@ class Header extends Component {
     anchorEl: null
   }
   renderContentLogin(){
+    console.log('AllState',this.props)
     switch(this.props.auth){
       case null:
         return 'Still wait';
